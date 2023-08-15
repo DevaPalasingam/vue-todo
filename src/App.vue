@@ -11,6 +11,11 @@ interface Todo {
 const todos = ref<Todo[]>([])
 const name = ref('')
 
+const nameTodo = computed(() => {
+  if (name.value.trim() === '' || name.value == null) return ''
+  else return (name.value + "'s")
+})
+
 const input_content = ref('')
 const input_category = ref('Work')
 
@@ -38,6 +43,10 @@ const removeTodo = (todo: Todo) => {
   todos.value = todos.value.filter(t => t !== todo)
 }
 
+const clearAll = () => {
+  todos.value = []
+}
+
 watch(todos, newVal => {
   localStorage.setItem('todos', JSON.stringify(newVal))
 }, { deep: true })
@@ -54,46 +63,48 @@ onMounted(() => {
 
 <template>
   <main class="container">
-    <section class="greeting">
+    <article class="greeting">
       <h2 class="title">
         What's up, <input type="text" placeholder="Name here" v-model="name">
       </h2>
-    </section>
+    </article>
 
-    <section class="create-todo">
-      <h4>CREATE A TODO</h4>
+    <article class="create-todo">
+      <h4 style="margin: 0;">CREATE A TODO</h4>
       <form @submit.prevent="addTodo">
         <div>What's on your Todo?</div>
         <input type="text" placeholder="Do some pushups" v-model="input_content">
 
-        <label for="categories">Pick a Category</label>
-        <select id="categories" v-model="input_category" required>
-          <option>Work</option>
-          <option>Personal</option>
-        </select>
-
-        <input type="submit" value="Add Todo">
+        <div style="display: flex; align-items: center;">
+          <label for="categories">Pick a Category</label>
+          <select id="categories" v-model="input_category" required style="margin: 0 .5rem; width: auto;">
+            <option>Work</option>
+            <option>Personal</option>
+          </select>
+          <input type="submit" value="Add Todo" style="margin: 0; width: auto;">
+        </div>
       </form>
-    </section>
+    </article>
 
-    <section class="todo-list">
-      <div>TODO LIST</div>
+    <article class="todo-list">
+      <h4>{{ nameTodo }} TODO LIST</h4>
       <div class="list">
         <div v-for="todo in todos_asc" :class="`todo-item ${todo.done && 'done'}`">
-          <label>
+          <div style="display: flex; align-items: center; margin-bottom: 1rem;">
             <input type="checkbox" v-model="todo.done">
             <span :class="`${todo.category}`"></span>
-          </label>
 
-          <div class="todo-content">
-            <input type="text" v-model="todo.content">
-          </div>
+            <div class="todo-content">
+              <input type="text" v-model="todo.content" style="margin: 0;">
+            </div>
 
-          <div class="actions">
-            <button class="delete" @click="removeTodo(todo)">Delete</button>
+            <div class="actions">
+              <button class="delete" @click="removeTodo(todo)" style="margin: 0 .5rem;">Delete</button>
+            </div>
           </div>
         </div>
+        <button v-if="todos.length > 0" @click="clearAll" style="width: 7rem;">Clear All</button>
       </div>
-    </section>
+    </article>
   </main>
 </template>
