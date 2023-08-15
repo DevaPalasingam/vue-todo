@@ -47,6 +47,11 @@ const clearAll = () => {
   todos.value = []
 }
 
+const getColor = (category: string) => {
+  if (category == 'Work') return 'background-color: lavender;'
+  else return 'background-color: oldlace;'
+}
+
 watch(todos, newVal => {
   localStorage.setItem('todos', JSON.stringify(newVal))
 }, { deep: true })
@@ -92,7 +97,6 @@ onMounted(() => {
         <div v-for="todo in todos_asc" :class="`todo-item ${todo.done && 'done'}`">
           <div style="display: flex; align-items: center; margin-bottom: 1rem;">
             <input type="checkbox" v-model="todo.done">
-            <span :class="`${todo.category}`"></span>
 
             <div class="todo-content">
               <input type="text" v-model="todo.content" style="margin: 0;">
