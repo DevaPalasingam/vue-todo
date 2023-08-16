@@ -109,11 +109,11 @@ onMounted(() => {
             </div>
 
             <div class="actions">
-              <button class="delete" @click="removeTodo(todo)" style="margin: 0 .5rem;">Delete</button>
+              <button class="delete contrast outline" @click="removeTodo(todo)" style="margin: 0 .5rem;">Delete</button>
             </div>
           </div>
         </div>
-        <button v-if="todos.length > 0" @click="clearAll" style="width: 7rem;">Clear All</button>
+        <button v-if="todos.length > 0" @click="clearAll" class="contrast" style="width: 7rem;">Clear All</button>
       </div>
     </article>
   </main>
