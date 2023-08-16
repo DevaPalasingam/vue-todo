@@ -36,7 +36,6 @@ const addTodo = () => {
   });
 
   input_content.value = ''
-  input_category.value = 'Work'
 }
 
 const removeTodo = (todo: Todo) => {
@@ -47,9 +46,14 @@ const clearAll = () => {
   todos.value = []
 }
 
+const categoryColor = computed(() => {
+  if (input_category.value == 'Work') return 'lavender'
+  else return 'cornsilk'
+})
+
 const getColor = (category: string) => {
-  if (category == 'Work') return 'background-color: lavender;'
-  else return 'background-color: oldlace;'
+  if (category == 'Work') return 'lavender;'
+  else return 'cornsilk;'
 }
 
 watch(todos, newVal => {
@@ -82,7 +86,8 @@ onMounted(() => {
 
         <div style="display: flex; align-items: center;">
           <label for="categories">Pick a Category</label>
-          <select id="categories" v-model="input_category" required style="margin: 0 .5rem; width: auto;">
+          <select id="categories" v-model="input_category" required
+            :style="`margin: 0 .5rem; width: auto; color: black; background-color: ${categoryColor}`">
             <option>Work</option>
             <option>Personal</option>
           </select>
@@ -99,7 +104,8 @@ onMounted(() => {
             <input type="checkbox" v-model="todo.done">
 
             <div class="todo-content">
-              <input type="text" v-model="todo.content" style="margin: 0;">
+              <input type="text" v-model="todo.content"
+                :style="`margin: 0; color: black; background-color: ${getColor(todo.category)}`">
             </div>
 
             <div class="actions">
